@@ -1,0 +1,59 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "process",
+			"command": "streamdeck",
+			"args": [
+				"stop",
+				"icu.veelume.sc-mapper"
+			],
+			"problemMatcher": [],
+			"label": "streamdeck: stop",
+			"hide": true,
+		},
+		{
+			"type": "process",
+			"command": "streamdeck",
+			"args": [
+				"restart",
+				"icu.veelume.sc-mapper"
+			],
+			"problemMatcher": [],
+			"label": "streamdeck: restart",
+			"hide": true,
+		},
+		{
+			"type": "dart",
+			"command": "dart",
+			"cwd": "",
+			"args": [
+				"compile",
+				"exe",
+				"${workspaceFolder}/bin/sc_mapper_dart.dart",
+				"-o",
+				"${workspaceFolder}/icu.veelume.sc-mapper.sdPlugin/plugin.exe"
+			],
+			"problemMatcher": [],
+			"label": "dart: dart compile exe",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"hide": true
+		},
+		{
+			"label": "Build Plugin",
+			"dependsOn": [
+				"streamdeck: stop",
+				"dart: dart compile exe",
+				"streamdeck: restart"
+			],
+			"dependsOrder": "sequence",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

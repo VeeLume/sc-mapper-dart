@@ -1,0 +1,28 @@
+name: sc_mapper_dart
+description: A sample command-line application.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.8.1
+
+# Add regular dependencies here.
+dependencies:
+  web_socket_channel: ^3.0.3
+  path: ^1.9.1
+  win32: ^5.14.0
+  args: ^2.7.0
+  json_annotation: ^4.9.0
+  logger: ^2.6.1
+  xml: ^6.6.0
+  collection: ^1.19.1
+  ffi: ^2.1.4
+  get_it: ^8.0.3
+  dart_helper_utils: ^5.2.0
+
+dev_dependencies:
+  build_runner: ^2.6.0
+  json_serializable: ^6.10.0
+  lints: ^5.0.0
+  mocktail: ^1.0.4
+  test: ^1.26.2
