@@ -1,0 +1,68 @@
+name: Build and Release Stream Deck Plugin
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version
+        id: version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"        # e.g. 1.2.3
+          build="1"
+          full="$tag.$build"                # 1.2.3.1
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+          echo "build=$build" >> $GITHUB_OUTPUT
+          echo "full=$full" >> $GITHUB_OUTPUT
+
+      - name: Patch pubspec.yaml version
+        run: |
+          echo "Setting pubspec.yaml version: ${{ steps.version.outputs.tag }}+${{ steps.version.outputs.build }}"
+          sed -i "s/^version:.*/version: ${{ steps.version.outputs.tag }}+${{ steps.version.outputs.build }}/" pubspec.yaml
+
+      - name: Patch plugin manifest.json version
+        run: |
+          jq --arg v "${{ steps.version.outputs.full }}" '.Version = $v' icu.veelume.sc-mapper.sdPlugin/manifest.json > tmp.json && mv tmp.json icu.veelume.sc-mapper.sdPlugin/manifest.json
+        
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1.6.4
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Analyze project source
+        run: dart analyze
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.2
+        with:
+          node-version: '20'
+
+      - name: Install Stream Deck CLI
+        run: npm install -g @elgato/cli@latest
+
+      - name: Pack .streamDeckPlugin
+        run: streamdeck pack .\icu.veelume.sc-mapper.sdPlugin\
+
+      - name: Upload plugin artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: streamDeckPlugin
+          path: icu.veelume.sc-mapper.streamDeckPlugin
+
+      - name: Create GitHub Release
+        run: |
+          gh release create "v${{ steps.version.outputs.tag }}" \
+            --title "v${{ steps.version.outputs.tag }}" \
+            --notes "Auto-generated release for version ${{ steps.version.outputs.full }}" \
+            icu.veelume.sc-mapper.streamDeckPlugin
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
