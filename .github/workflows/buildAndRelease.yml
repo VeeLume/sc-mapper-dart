@@ -31,7 +31,7 @@ jobs:
       - name: Patch plugin manifest.json version
         run: |
           jq --arg v "${{ steps.version.outputs.full }}" '.Version = $v' icu.veelume.sc-mapper.sdPlugin/manifest.json > tmp.json && mv tmp.json icu.veelume.sc-mapper.sdPlugin/manifest.json
-        
+
       - name: Set up Dart
         uses: dart-lang/setup-dart@v1.6.4
 
