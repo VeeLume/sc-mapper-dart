@@ -1,6 +1,6 @@
 name: sc_mapper_dart
 description: A sample command-line application.
-version: 0.1.4+1
+version: 0.1.5+1
 # repository: https://github.com/my_org/my_repo
 
 environment:
