@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:path/path.dart' as p;
-import 'package:yaml/yaml.dart';
 import 'package:yaml_edit/yaml_edit.dart';
 
 Future<void> main(List<String> args) async {

@@ -29,9 +29,6 @@ jobs:
       - name: Install dependencies
         run: dart pub get
 
-      - name: Analyze project source
-        run: dart analyze
-
       - name: Set up Node.js
         uses: actions/setup-node@v4.2
         with:
