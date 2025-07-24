@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: dart pub get
 
+      - name: Compile Dart code
+        run: dart compile exe bin/sc_mapper_dart.dart -o com.veelume.sc-mapper.sdPlugin/plugin.exe
+
       - name: Set up Node.js
         uses: actions/setup-node@v4.2
         with:
